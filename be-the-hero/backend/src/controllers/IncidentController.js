@@ -8,16 +8,31 @@ module.exports = {
         const [count] = await connection('incidents').count();
 
         //esquema de paginação
-        const incidents = await connection('incidents')
-            .join('ongs', 'ong_id', '=', 'incidents.ong_id') //pegando os dados da ong também
+        /*const incidents = await connection('incidents')
+            .join('ongs', 'ongs.id', '=', 'incidents.ong_id') //pegando os dados da ong também
             .limit(5) //5 por vez
             .offset((page - 1) * 5) //pular 5 cada vez, de acordo com a página
-            .select('incidents.*',
+            .select(['incidents.*',
                 'ongs.name',
                 'ongs.email',
                 'ongs.whatsapp',
                 'ongs.city',
-                'ongs.uf');
+                'ongs.uf'
+        ]);*/
+
+        const incidents = await connection('incidents')
+            .join('ongs', 'incidents.ong_id', '=', 'ongs.id')
+            .limit(5)
+            .offset((page - 1) * 5)
+            .select(['incidents.*',
+                'ongs.name',
+                'ongs.email',
+                'ongs.whatsapp',
+                'ongs.city',
+                'ongs.uf'
+            ]);
+
+        console.log(incidents);
 
         response.header('X-Total-Count', count['count(*)']);
 

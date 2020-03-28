@@ -1,6 +1,6 @@
 exports.up = function(knex) {
     return knex.schema.createTable('incidents', function(table) {
-        table.increments(); //chave primária auto incrementável
+        table.increments('id'); //chave primária auto incrementável
 
         table.string('titulo').notNullable();
         table.string('description').notNullable();
